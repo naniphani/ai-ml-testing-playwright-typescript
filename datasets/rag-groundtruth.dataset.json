@@ -1,0 +1,10 @@
+[
+  {
+    "id": "rag-001",
+    "question": "What is the refund policy?",
+    "expectedKeywords": [
+      "refund",
+      "30 days"
+    ]
+  }
+]

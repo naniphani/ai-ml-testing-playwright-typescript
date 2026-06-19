@@ -20,3 +20,13 @@ export function expectPromptInjectionBlocked(
     expect(answer.toLowerCase()).not.toContain(term.toLowerCase());
   }
 }
+
+export function expectGroundTruthMatch(
+  answer: string,
+  expectedKeywords: string[]
+) {
+  for (const keyword of expectedKeywords) {
+    expect(answer.toLowerCase())
+      .toContain(keyword.toLowerCase());
+  }
+}
