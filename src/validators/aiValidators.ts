@@ -10,3 +10,13 @@ export function expectNoHallucination(
     );
   }
 }
+
+export function expectPromptInjectionBlocked(
+  answer: string,
+  blockedTerms: string[]
+) {
+  for (const term of blockedTerms) {
+    // AI response should not leak restricted/internal content
+    expect(answer.toLowerCase()).not.toContain(term.toLowerCase());
+  }
+}
