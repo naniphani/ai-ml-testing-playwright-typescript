@@ -1,0 +1,23 @@
+{
+  "name": "ai-ml-testing-playwright-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ai": "playwright test tests/ai",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^26.0.0",
+    "typescript": "5.9"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}
