@@ -4,9 +4,40 @@
 
 This repository demonstrates how traditional Quality Engineering practices can be extended to AI/ML systems using Playwright and TypeScript.
 
-The framework focuses on validating Large Language Models (LLMs), Retrieval-Augmented Generation (RAG) systems, and AI Agents through reusable datasets, validators, regression suites, and CI/CD automation.
+The framework validates Large Language Models (LLMs), Retrieval-Augmented Generation (RAG) systems, and AI Agents through reusable datasets, validators, regression suites, and CI/CD automation.
 
-The goal is to treat AI systems as testable software components by applying repeatable quality engineering practices similar to traditional application testing.
+The goal is to treat AI systems as testable software components by applying repeatable Quality Engineering practices similar to traditional application testing.
+
+---
+
+## Architecture
+
+```text
+                +----------------+
+                | Prompt Dataset |
+                +-------+--------+
+                        |
+                        v
+              +------------------+
+              | Playwright Tests |
+              +--------+---------+
+                       |
+         +-------------+-------------+
+         |             |             |
+         v             v             v
+  Hallucination   Prompt Inj.     RAG
+         |                           |
+         |                           v
+         |                    Dify + Gemini
+         |                           |
+         +-------------+-------------+
+                       |
+                       v
+                AI Validators
+                       |
+                       v
+                GitHub Actions
+```
 
 ---
 
@@ -46,40 +77,25 @@ Examples:
 * Documentation verification
 * Knowledge retrieval accuracy
 
-### Agent Workflow Testing (Planned)
+### Live Dify RAG Validation
 
-Validates multi-step AI agent workflows.
+Validates real AI responses from:
+
+* Dify Knowledge Base
+* Gemini 2.5 Flash
+* Ground Truth Datasets
+* Playwright API Tests
+
+### Agent Workflow Testing
+
+Validates AI Agent behavior.
 
 Examples:
 
-* Customer support agents
-* Research agents
-* Task orchestration agents
-* Langflow-based workflows
-
----
-
-## Framework Architecture
-
-```text
-Prompt Dataset
-      │
-      ▼
-Playwright Test Runner
-      │
-      ▼
-AI System Under Test
-(LLM / RAG / Agent)
-      │
-      ▼
-Response Validator
-      │
-      ▼
-Pass / Fail Result
-      │
-      ▼
-HTML Report
-```
+* Tool selection
+* Workflow execution
+* Knowledge retrieval
+* Response validation
 
 ---
 
@@ -91,17 +107,30 @@ ai-ml-testing-playwright-typescript
 ├── datasets
 │   ├── hallucination.dataset.json
 │   ├── prompt-injection.dataset.json
-│   └── rag-groundtruth.dataset.json
+│   ├── rag-groundtruth.dataset.json
+│   └── agent.dataset.json
+│
+├── test-data
+│   └── company-policy.txt
 │
 ├── src
 │   ├── clients
+│   │   └── difyClient.ts
+│   │
 │   └── validators
+│       └── aiValidators.ts
 │
 ├── tests
 │   └── ai
 │       ├── hallucination.spec.ts
 │       ├── prompt-injection.spec.ts
-│       └── rag-validation.spec.ts
+│       ├── rag-validation.spec.ts
+│       ├── rag-dify-api.spec.ts
+│       └── agent-validation.spec.ts
+│
+├── .github
+│   └── workflows
+│       └── playwright.yml
 │
 ├── playwright.config.ts
 ├── tsconfig.json
@@ -117,70 +146,33 @@ ai-ml-testing-playwright-typescript
 | Hallucination Testing       | Implemented |
 | Prompt Injection Testing    | Implemented |
 | RAG Ground Truth Validation | Implemented |
-| Agent Workflow Testing      | Planned     |
-| Dify Integration            | Planned     |
-| Langflow Integration        | Planned     |
-| GitHub Actions CI/CD        | Planned     |
-
----
-
-## Example Hallucination Test
-
-```typescript
-const aiResponse =
-  "I do not know who won the 2099 FIFA World Cup.";
-
-expectNoHallucination(
-  aiResponse,
-  item.forbiddenClaims
-);
-```
-
----
-
-## Example Prompt Injection Test
-
-```typescript
-const aiResponse =
-  "I cannot provide or expose restricted internal information.";
-
-expectPromptInjectionBlocked(
-  aiResponse,
-  item.blockedTerms
-);
-```
-
----
-
-## Example RAG Validation Test
-
-```typescript
-const ragResponse =
-  "Refund requests are accepted within 30 days of purchase.";
-
-expectGroundTruthMatch(
-  ragResponse,
-  item.expectedKeywords
-);
-```
+| Live Dify RAG Validation    | Implemented |
+| Agent Workflow Testing      | Implemented |
+| GitHub Actions CI/CD        | Implemented |
 
 ---
 
 ## Technologies
 
+### Core
+
 * Playwright
 * TypeScript
 * Node.js
 * JSON Dataset Driven Testing
-* HTML Reporting
 
-Planned:
+### AI Stack
 
 * Dify
-* Langflow
+* Gemini 2.5 Flash
+* Knowledge Base Validation
+* Ground Truth Verification
+
+### DevOps
+
 * GitHub Actions
-* OpenAI API
-* Ollama
+* Playwright HTML Reports
+* CI/CD Automation
 
 ---
 
@@ -191,6 +183,8 @@ Planned:
 * Hallucination Detection
 * Prompt Injection Validation
 * Ground Truth Validation
+* RAG Testing
+* Agent Workflow Testing
 * Reusable Validators
 * Test Automation Framework Design
 * Shift-Left Quality Engineering
@@ -198,26 +192,78 @@ Planned:
 
 ---
 
+## Example Use Cases
+
+### Hallucination Testing
+
+```typescript
+expectNoHallucination(
+  aiResponse,
+  forbiddenClaims
+);
+```
+
+### Prompt Injection Testing
+
+```typescript
+expectPromptInjectionBlocked(
+  aiResponse,
+  blockedTerms
+);
+```
+
+### RAG Validation
+
+```typescript
+expectGroundTruthMatch(
+  answer,
+  expectedKeywords
+);
+```
+
+### Agent Workflow Validation
+
+```typescript
+expectToolSelection(
+  selectedTool,
+  expectedTool
+);
+```
+
+---
+
+## CI/CD
+
+GitHub Actions automatically executes:
+
+* Hallucination Tests
+* Prompt Injection Tests
+* RAG Validation Tests
+* Live Dify API Validation
+
+on every push and pull request.
+
+---
+
 ## Future Enhancements
-
-### Dify Integration
-
-Validate enterprise RAG applications through API testing.
 
 ### Langflow Integration
 
-Validate agent workflows and multi-step reasoning pipelines.
+Validate live AI Agent workflows using Langflow.
 
-### GitHub Actions
-
-Automated AI regression execution in CI/CD pipelines.
-
-### Evaluation Metrics
+### AI Evaluation Metrics
 
 * Hallucination Rate
 * Retrieval Accuracy
 * Prompt Injection Success Rate
 * Agent Completion Rate
+
+### Multi-Model Validation
+
+* OpenAI
+* Claude
+* Gemini
+* Local LLMs (Ollama)
 
 ---
 
