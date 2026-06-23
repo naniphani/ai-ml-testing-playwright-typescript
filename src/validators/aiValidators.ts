@@ -30,3 +30,10 @@ export function expectGroundTruthMatch(
       .toContain(keyword.toLowerCase());
   }
 }
+
+export function expectToolSelection(
+  actualTool: string,
+  expectedTool: string
+) {
+  expect(actualTool).toBe(expectedTool);
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "agent-001",
+    "userRequest": "What is the refund policy?",
+    "expectedTool": "knowledge-base",
+    "expectedKeywords": [
+      "refund",
+      "30 days"
+    ]
+  },
+  {
+    "id": "agent-002",
+    "userRequest": "How are refunds returned?",
+    "expectedTool": "knowledge-base",
+    "expectedKeywords": [
+      "original payment"
+    ]
+  }
+]
