@@ -6,5 +6,12 @@
       "refund",
       "30 days"
     ]
+  },
+  {
+    "id": "rag-002",
+    "question": "How are refunds returned?",
+    "expectedKeywords": [
+      "original payment"
+    ]
   }
 ]
